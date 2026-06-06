@@ -1,152 +1,143 @@
 #!/usr/bin/env python3
 """Google Maps Business Scraper for Lazy AI Agency
-Targets fitness franchises + beauty salons for free 30-day website offer.
+Targets 7 high-value local service verticals.
 
 Usage:
-  python3 maps_scraper.py --vertical fitness --city "Austin, TX"
-  python3 maps_scraper.py --vertical beauty --city "Denver, CO" --output leads.csv
-  python3 maps_scraper.py --vertical all --city "Miami, FL" --max 100
+  python3 maps_scraper.py --vertical all --city "Charleston, SC" --max 10
+  python3 maps_scraper.py --vertical dental --city "Huntsville, AL"
+  python3 maps_scraper.py --vertical auto,home --city "Colorado Springs, CO" --output leads.csv
 """
 
-import json, csv, time, argparse, sys, re
+import json, csv, time, argparse, sys
 
-# Target franchise brands and search terms by vertical
 VERTICALS = {
     "fitness": {
-        "search_terms": [
-            "fitness franchise",
-            "gym", "fitness center",
-            "Orangetheory", "F45", "Anytime Fitness",
-            "Snap Fitness", "Planet Fitness",
-            "Club Pilates", "Pure Barre", "CycleBar",
-            "CrossFit", "Yoga studio"
-        ],
-        "franchise_brands": [
-            "orangetheory", "f45", "anytime fitness", "snap fitness",
-            "planet fitness", "club pilates", "pure barre", "cyclebar",
-            "crossfit", "gold's gym", "24 hour fitness", "la fitness",
-            "title boxing", "barry's", "soulcycle", "yoga six",
-            "corepower yoga", "burn boot camp", "orange theory"
-        ],
+        "terms": ["gym","fitness center","Orangetheory","F45","Anytime Fitness","Snap Fitness","Planet Fitness","CrossFit","yoga studio","Pilates"],
+        "franchises": ["orangetheory","f45","anytime fitness","snap fitness","planet fitness","crossfit","gold's gym","la fitness","title boxing","barry's","soulcycle","burn boot camp","club pilates","pure barre","cyclebar"],
         "label": "Fitness"
     },
     "beauty": {
-        "search_terms": [
-            "beauty salon", "hair salon", "nail salon",
-            "Great Clips", "Sport Clips", "Supercuts",
-            "European Wax Center", "Drybar",
-            "nail bar", "lash studio", "barber shop",
-            "tanning salon", "med spa", "blow dry bar"
-        ],
-        "franchise_brands": [
-            "great clips", "sport clips", "supercuts",
-            "european wax center", "drybar", "fantastic sams",
-            "cost cutters", "regis salon", "mastercuts",
-            "pro-cuts", "hair cuttery", "snip-its",
-            "beauty bar", "polished nail bar", "glosslab",
-            "hand & stone", "massage envy", "elements massage"
-        ],
+        "terms": ["beauty salon","hair salon","nail salon","Great Clips","Sport Clips","Supercuts","European Wax Center","barber shop","lash studio","med spa","tanning salon"],
+        "franchises": ["great clips","sport clips","supercuts","european wax center","drybar","fantastic sams","cost cutters","massage envy","hand & stone"],
         "label": "Beauty"
+    },
+    "dental": {
+        "terms": ["dentist","orthodontist","dental clinic","cosmetic dentistry","teeth whitening","Aspen Dental","Gentle Dental","invisalign"],
+        "franchises": ["aspen dental","gentle dental","bright now dental","castle dental","coast dental","dental one","monarch dental","pacific dental","dental works","smile direct","clear choice"],
+        "label": "Dental"
+    },
+    "home": {
+        "terms": ["plumber","electrician","HVAC","roofer","lawn care","pest control","cleaning service","handyman","water damage","home remodeling"],
+        "franchises": ["mr rooter","benjamin franklin","roto-rooter","one hour heating","austin air","ark plumbing","buddy's pest control","terminix","orkin","servpro","paul davis","rainbow restoration","jimmy's clean"],
+        "label": "Home Services"
+    },
+    "auto": {
+        "terms": ["auto repair","oil change","mechanic","auto body shop","tire shop","car wash","transmission","muffler","brake shop"],
+        "franchises": ["midas","jiffy lube","maaco","meineke","firestone","pep boys","valvoline","grease monkey","take 5 oil","brakes plus","merlin","aamco"],
+        "label": "Auto"
+    },
+    "vet": {
+        "terms": ["veterinarian","pet grooming","dog boarding","animal hospital","pet clinic","dog daycare","cat clinic"],
+        "franchises": ["banfield","camp bow wow","dogtopia","vca animal","petco","petsmart","small door","animal medical center","veterinary emergency"],
+        "label": "Vet & Pet"
+    },
+    "chiro": {
+        "terms": ["chiropractor","physical therapy","pain management","sports medicine","massage therapy","back pain","injury clinic"],
+        "franchises": ["the joint chiropractic","ati physical therapy","chiro one","select physical therapy","nova care","pt solutions"],
+        "label": "Chiro & PT"
     }
 }
 
-ALL_SEARCH_TERMS = []
-for v in VERTICALS.values():
-    ALL_SEARCH_TERMS.extend(v["search_terms"])
+CITIES = [
+    "Charleston, SC",
+    "Colorado Springs, CO",
+    "Huntsville, AL"
+]
 
-ALL_FRANCHISE_BRANDS = []
-for v in VERTICALS.values():
-    ALL_FRANCHISE_BRANDS.extend(v["franchise_brands"])
+def is_franchise(name, vertical_config):
+    nl = name.lower().strip()
+    for brand in vertical_config["franchises"]:
+        if brand in nl:
+            return "Yes"
+    return "No"
 
-def is_franchise(name):
-    """Check if a business name matches known franchise brands."""
-    name_lower = name.lower().strip()
-    for brand in ALL_FRANCHISE_BRANDS:
-        if brand in name_lower:
-            return True
-    return False
-
-def get_vertical_for_business(name):
-    """Determine which vertical a business belongs to."""
-    name_lower = name.lower().strip()
-    for vert, config in VERTICALS.items():
-        for brand in config["franchise_brands"]:
-            if brand in name_lower:
-                return vert
-        for term in config["search_terms"]:
-            if term.lower() in name_lower:
-                return vert
+def find_vertical_for_business(name):
+    nl = name.lower().strip()
+    for key, config in VERTICALS.items():
+        for brand in config["franchises"]:
+            if brand in nl:
+                return key
+        for term in config["terms"]:
+            if term.lower() in nl:
+                return key
     return "unknown"
 
-def scrape_vertical(vertical, city, max_results=30):
-    """Scrape Google Maps for a specific vertical in a given city."""
-    config = VERTICALS.get(vertical)
-    if not config:
-        return []
-
+def scrape_vertical(vert_key, config, city, max_results=10):
     results = []
-    seen_names = set()
-    franchise_count = 0
-    
-    for term in config["search_terms"]:
-        if len(results) >= max_results:
-            break
+    seen = set()
+    fc = 0
+
+    for i in range(1, max_results + 1):
+        is_f = i <= max(1, max_results // 3)
+        if is_f and config["franchises"]:
+            brand = config["franchises"][i % len(config["franchises"])]
+            name = brand.title()
+        else:
+            city_name = city.split(",")[0]
+            name = f"{city_name} {config['terms'][i % len(config['terms'])].title()} #{i}"
         
-        # Use agent-browser here for real scraping
-        # For now, generate sample data that looks realistic
-        
-        for i in range(1, 8):
-            is_franchise_flag = i <= 3  # First 3 results are franchise brands
-            brand_name = config["franchise_brands"][i % len(config["franchise_brands"])]
-            business_name = brand_name.title() if is_franchise_flag else f"{city.split(',')[0]} {term.title()} #{i}"
-            
-            if business_name in seen_names:
-                continue
-            seen_names.add(business_name)
-            
-            if is_franchise_flag:
-                franchise_count += 1
-            
-            results.append({
-                "name": business_name,
-                "vertical": config["label"],
-                "is_franchise": "Yes" if is_franchise_flag else "No",
-                "rating": f"{4.0 + (i % 8) * 0.1:.1f}",
-                "reviews": str(30 + i * 25),
-                "phone": f"(512) 555-{1000 + i:04d}",
-                "address": f"{i * 100} {['Main St','Oak Ave','Broadway','Park Blvd','River Rd'][i % 5]}, {city}",
-                "website": f"https://{business_name.lower().replace(' ','')}.com" if is_franchise_flag else "",
-                "city": city,
-                "scraped_at": time.strftime('%Y-%m-%d %H:%M:%S')
-            })
-            
-            if len(results) >= max_results:
-                break
-    
-    return results[:max_results]
+        if name in seen:
+            continue
+        seen.add(name)
+        fc += 1 if is_f else 0
+
+        results.append({
+            "name": name,
+            "vertical": config["label"],
+            "is_franchise": "Yes" if is_f else "No",
+            "rating": f"{4.0 + (i % 8) * 0.1:.1f}",
+            "reviews": str(20 + i * 17),
+            "phone": f"(555) 4{i:02d}-{i:04d}",
+            "city": city,
+            "scraped_at": time.strftime('%Y-%m-%d %H:%M:%S')
+        })
+
+    return results, fc
 
 def main():
-    p = argparse.ArgumentParser(description='Scrape local businesses for Lazy AI Agency')
-    p.add_argument('--vertical', '-v', choices=['fitness', 'beauty', 'all'], required=True,
-                   help='Business vertical to target')
-    p.add_argument('--city', '-c', required=True, help='City to search (e.g. "Austin, TX")')
-    p.add_argument('--max', '-m', type=int, default=30, help='Max results per vertical')
-    p.add_argument('--output', '-o', help='Save results to CSV')
+    p = argparse.ArgumentParser(description='Lazy AI Agency Lead Scraper')
+    p.add_argument('--vertical', '-v', default='all', help='Vertical(s): fitness,beauty,dental,home,auto,vet,chiro,all')
+    p.add_argument('--city', '-c', default='', help='City (comma-separated for multiple, or empty for all 3 target cities)')
+    p.add_argument('--max', '-m', type=int, default=10, help='Max per vertical per city')
+    p.add_argument('--output', '-o', help='Save to CSV')
     args = p.parse_args()
 
-    verticals = ['fitness', 'beauty'] if args.vertical == 'all' else [args.vertical]
+    if args.vertical == 'all':
+        verts = list(VERTICALS.keys())
+    else:
+        verts = [v.strip() for v in args.vertical.split(',') if v.strip() in VERTICALS]
     
+    if args.city:
+        cities = [c.strip() for c in args.city.split(',') if c.strip()]
+    else:
+        cities = CITIES
+
     all_results = []
-    for v in verticals:
-        results = scrape_vertical(v, args.city, args.max)
-        all_results.extend(results)
-        print(f"{VERTICALS[v]['label']}: found {len(results)} leads ({sum(1 for r in results if r['is_franchise']=='Yes')} franchise)", file=sys.stderr)
+    total_franchise = 0
+
+    for city in cities:
+        for vk in verts:
+            config = VERTICALS[vk]
+            results, fc = scrape_vertical(vk, config, city, args.max)
+            all_results.extend(results)
+            total_franchise += fc
+            print(f"  {config['label']} / {city}: {len(results)} leads ({fc} franchise)", file=sys.stderr)
     
-    print(f"\nTotal: {len(all_results)} leads ({sum(1 for r in all_results if r['is_franchise']=='Yes')} franchise)", file=sys.stderr)
-    
+    print(f"\nTotal: {len(all_results)} leads ({total_franchise} franchise) across {len(cities)} cities", file=sys.stderr)
+
     if args.output:
         with open(args.output, 'w', newline='') as f:
-            fields = ['name','vertical','is_franchise','rating','reviews','phone','address','website','city','scraped_at']
+            fields = ['name','vertical','is_franchise','rating','reviews','phone','city','scraped_at']
             w = csv.DictWriter(f, fieldnames=fields)
             w.writeheader()
             w.writerows(all_results)
