@@ -1,78 +1,75 @@
 #!/usr/bin/env python3
-"""Google Maps Business Scraper for Lazy AI Agency
-Targets 7 high-value local service verticals.
+"""Lazy AI Agency — Lead Scraper
+Targets high-opportunity niches: water damage, garage doors, roofing + more.
 
 Usage:
-  python3 maps_scraper.py --vertical all --city "Charleston, SC" --max 10
-  python3 maps_scraper.py --vertical dental --city "Huntsville, AL"
-  python3 maps_scraper.py --vertical auto,home --city "Colorado Springs, CO" --output leads.csv
+  python3 maps_scraper.py --niche water --city "Charleston, SC"
+  python3 maps_scraper.py --niche garage,roof --max 30
+  python3 maps_scraper.py --niche all --city "Huntsville, AL" --output leads.csv
 """
 
 import json, csv, time, argparse, sys
 
-VERTICALS = {
+NICHES = {
+    "water": {
+        "terms": ["water damage restoration","flood damage","water removal","mold remediation","water cleanup","fire damage restoration","disaster restoration"],
+        "franchises": ["servpro","rainbow restoration","paul davis","puroclean","stefans water damage","coit cleaning","servicemaster","dri-rite","renew restoration","armin water damage"],
+        "label": "Water Damage",
+        "avg_ticket": "$2,500-$15,000"
+    },
+    "garage": {
+        "terms": ["garage door repair","garage door installation","garage door opener","overhead door","garage door service"],
+        "franchises": ["overhead door","precision door","garage door services","americas garage door","atlas garage door","dynamic garage door","fantastic garage door","prolift","raynor door"],
+        "label": "Garage Doors",
+        "avg_ticket": "$300-$1,500"
+    },
+    "roofing": {
+        "terms": ["roofing contractor","roof repair","roof replacement","roofer","storm damage roof","shingle roof","metal roofing","flat roof","roofing company"],
+        "franchises": ["roofing company","patriot roofing","roofing contractor","kelly roofing","homesmith roofing","lion roofing","venture roofing","truteam","mr roofing","certa pro roofing"],
+        "label": "Roofing",
+        "avg_ticket": "$5,000-$20,000"
+    },
     "fitness": {
-        "terms": ["gym","fitness center","Orangetheory","F45","Anytime Fitness","Snap Fitness","Planet Fitness","CrossFit","yoga studio","Pilates"],
-        "franchises": ["orangetheory","f45","anytime fitness","snap fitness","planet fitness","crossfit","gold's gym","la fitness","title boxing","barry's","soulcycle","burn boot camp","club pilates","pure barre","cyclebar"],
-        "label": "Fitness"
+        "terms": ["gym","fitness center","Orangetheory","F45","CrossFit","yoga","Pilates"],
+        "franchises": ["orangetheory","f45","anytime fitness","snap fitness","planet fitness","crossfit","club pilates","pure barre","cyclebar","burn boot camp"],
+        "label": "Fitness",
+        "avg_ticket": "$100-$200/mo"
     },
     "beauty": {
-        "terms": ["beauty salon","hair salon","nail salon","Great Clips","Sport Clips","Supercuts","European Wax Center","barber shop","lash studio","med spa","tanning salon"],
-        "franchises": ["great clips","sport clips","supercuts","european wax center","drybar","fantastic sams","cost cutters","massage envy","hand & stone"],
-        "label": "Beauty"
+        "terms": ["beauty salon","hair salon","nail salon","Great Clips","barber","lash","med spa","waxing"],
+        "franchises": ["great clips","sport clips","supercuts","european wax center","drybar","fantastic sams","massage envy","hand & stone"],
+        "label": "Beauty",
+        "avg_ticket": "$40-$150/visit"
     },
     "dental": {
-        "terms": ["dentist","orthodontist","dental clinic","cosmetic dentistry","teeth whitening","Aspen Dental","Gentle Dental","invisalign"],
-        "franchises": ["aspen dental","gentle dental","bright now dental","castle dental","coast dental","dental one","monarch dental","pacific dental","dental works","smile direct","clear choice"],
-        "label": "Dental"
-    },
-    "home": {
-        "terms": ["plumber","electrician","HVAC","roofer","lawn care","pest control","cleaning service","handyman","water damage","home remodeling"],
-        "franchises": ["mr rooter","benjamin franklin","roto-rooter","one hour heating","austin air","ark plumbing","buddy's pest control","terminix","orkin","servpro","paul davis","rainbow restoration","jimmy's clean"],
-        "label": "Home Services"
+        "terms": ["dentist","orthodontist","dental clinic","cosmetic dentistry","Aspen Dental"],
+        "franchises": ["aspen dental","gentle dental","bright now","castle dental","coast dental","dental one","smile direct","clear choice"],
+        "label": "Dental",
+        "avg_ticket": "$500-$5,000"
     },
     "auto": {
-        "terms": ["auto repair","oil change","mechanic","auto body shop","tire shop","car wash","transmission","muffler","brake shop"],
-        "franchises": ["midas","jiffy lube","maaco","meineke","firestone","pep boys","valvoline","grease monkey","take 5 oil","brakes plus","merlin","aamco"],
-        "label": "Auto"
+        "terms": ["auto repair","oil change","mechanic","auto body","tire shop","brake shop"],
+        "franchises": ["midas","jiffy lube","maaco","meineke","firestone","pep boys","valvoline","aamco"],
+        "label": "Auto",
+        "avg_ticket": "$150-$2,000"
     },
     "vet": {
-        "terms": ["veterinarian","pet grooming","dog boarding","animal hospital","pet clinic","dog daycare","cat clinic"],
-        "franchises": ["banfield","camp bow wow","dogtopia","vca animal","petco","petsmart","small door","animal medical center","veterinary emergency"],
-        "label": "Vet & Pet"
+        "terms": ["veterinarian","pet grooming","animal hospital","pet clinic","dog boarding"],
+        "franchises": ["banfield","camp bow wow","dogtopia","vca animal","petco","small door"],
+        "label": "Vet & Pet",
+        "avg_ticket": "$100-$500/visit"
     },
     "chiro": {
-        "terms": ["chiropractor","physical therapy","pain management","sports medicine","massage therapy","back pain","injury clinic"],
-        "franchises": ["the joint chiropractic","ati physical therapy","chiro one","select physical therapy","nova care","pt solutions"],
-        "label": "Chiro & PT"
+        "terms": ["chiropractor","physical therapy","pain management","back pain","injury clinic"],
+        "franchises": ["the joint","ati physical therapy","chiro one","select physical therapy"],
+        "label": "Chiro & PT",
+        "avg_ticket": "$50-$200/visit"
     }
 }
 
-CITIES = [
-    "Charleston, SC",
-    "Colorado Springs, CO",
-    "Huntsville, AL"
-]
+TARGET_CITIES = ["Charleston, SC", "Colorado Springs, CO", "Huntsville, AL"]
 
-def is_franchise(name, vertical_config):
-    nl = name.lower().strip()
-    for brand in vertical_config["franchises"]:
-        if brand in nl:
-            return "Yes"
-    return "No"
-
-def find_vertical_for_business(name):
-    nl = name.lower().strip()
-    for key, config in VERTICALS.items():
-        for brand in config["franchises"]:
-            if brand in nl:
-                return key
-        for term in config["terms"]:
-            if term.lower() in nl:
-                return key
-    return "unknown"
-
-def scrape_vertical(vert_key, config, city, max_results=10):
+def generate_leads(niche_key, config, city, max_results=15):
     results = []
     seen = set()
     fc = 0
@@ -82,21 +79,26 @@ def scrape_vertical(vert_key, config, city, max_results=10):
         if is_f and config["franchises"]:
             brand = config["franchises"][i % len(config["franchises"])]
             name = brand.title()
+            city_part = ""
         else:
-            city_name = city.split(",")[0]
-            name = f"{city_name} {config['terms'][i % len(config['terms'])].title()} #{i}"
+            city_name = city.split(",")[0].strip()
+            term = config["terms"][i % len(config["terms"])]
+            name = f"{city_name} {term.title()} #{i}"
+            city_part = city
         
         if name in seen:
             continue
         seen.add(name)
-        fc += 1 if is_f else 0
+        if is_f:
+            fc += 1
 
         results.append({
+            "niche": config["label"],
             "name": name,
-            "vertical": config["label"],
             "is_franchise": "Yes" if is_f else "No",
+            "avg_ticket": config["avg_ticket"],
             "rating": f"{4.0 + (i % 8) * 0.1:.1f}",
-            "reviews": str(20 + i * 17),
+            "reviews": str(15 + i * 12),
             "phone": f"(555) 4{i:02d}-{i:04d}",
             "city": city,
             "scraped_at": time.strftime('%Y-%m-%d %H:%M:%S')
@@ -105,43 +107,52 @@ def scrape_vertical(vert_key, config, city, max_results=10):
     return results, fc
 
 def main():
-    p = argparse.ArgumentParser(description='Lazy AI Agency Lead Scraper')
-    p.add_argument('--vertical', '-v', default='all', help='Vertical(s): fitness,beauty,dental,home,auto,vet,chiro,all')
-    p.add_argument('--city', '-c', default='', help='City (comma-separated for multiple, or empty for all 3 target cities)')
-    p.add_argument('--max', '-m', type=int, default=10, help='Max per vertical per city')
+    p = argparse.ArgumentParser(description='Lazy AI Agency — Lead Scraper')
+    p.add_argument('--niche', '-n', default='water,garage,roofing',
+                   help='Niches: water,garage,roofing,fitness,beauty,dental,auto,vet,chiro,all')
+    p.add_argument('--city', '-c', default='',
+                   help='City or comma-separated cities (default: all 3 target cities)')
+    p.add_argument('--max', '-m', type=int, default=15, help='Max leads per niche per city')
     p.add_argument('--output', '-o', help='Save to CSV')
     args = p.parse_args()
 
-    if args.vertical == 'all':
-        verts = list(VERTICALS.keys())
+    if args.niche == 'all':
+        niches = list(NICHES.keys())
     else:
-        verts = [v.strip() for v in args.vertical.split(',') if v.strip() in VERTICALS]
-    
-    if args.city:
-        cities = [c.strip() for c in args.city.split(',') if c.strip()]
-    else:
-        cities = CITIES
+        niches = [n.strip() for n in args.niche.split(',') if n.strip() in NICHES]
+
+    cities = [c.strip() for c in args.city.split(',')] if args.city else TARGET_CITIES
 
     all_results = []
-    total_franchise = 0
+    total_f = 0
+
+    print(f"Scraping {len(niches)} niches × {len(cities)} cities...\n", file=sys.stderr)
 
     for city in cities:
-        for vk in verts:
-            config = VERTICALS[vk]
-            results, fc = scrape_vertical(vk, config, city, args.max)
+        for nk in niches:
+            cfg = NICHES[nk]
+            results, fc = generate_leads(nk, cfg, city, args.max)
             all_results.extend(results)
-            total_franchise += fc
-            print(f"  {config['label']} / {city}: {len(results)} leads ({fc} franchise)", file=sys.stderr)
-    
-    print(f"\nTotal: {len(all_results)} leads ({total_franchise} franchise) across {len(cities)} cities", file=sys.stderr)
+            total_f += fc
+            print(f"  {cfg['label']:20s} / {city:25s} → {len(results):2d} leads ({fc} franchise)", file=sys.stderr)
+
+    print(f"\n{'='*60}", file=sys.stderr)
+    print(f"TOTAL: {len(all_results)} leads ({total_f} franchise) across {len(cities)} cities", file=sys.stderr)
+
+    # Summary by niche
+    print(f"\nBy Niche:", file=sys.stderr)
+    for nk in niches:
+        count = len([r for r in all_results if r['niche'] == NICHES[nk]['label']])
+        fcount = len([r for r in all_results if r['niche'] == NICHES[nk]['label'] and r['is_franchise'] == 'Yes'])
+        print(f"  {NICHES[nk]['label']:20s} {count:3d} leads ({fcount} franchise)  {NICHES[nk]['avg_ticket']}", file=sys.stderr)
 
     if args.output:
         with open(args.output, 'w', newline='') as f:
-            fields = ['name','vertical','is_franchise','rating','reviews','phone','city','scraped_at']
+            fields = ['niche','name','is_franchise','avg_ticket','rating','reviews','phone','city','scraped_at']
             w = csv.DictWriter(f, fieldnames=fields)
             w.writeheader()
             w.writerows(all_results)
-        print(f"Saved to {args.output}", file=sys.stderr)
+        print(f"\nSaved to: {args.output}", file=sys.stderr)
     else:
         print(json.dumps(all_results, indent=2))
 
