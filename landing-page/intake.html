@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply — Free Trial | Lazy AI Agency</title>
+  <meta name="description" content="Start your free 30-day trial. Get 5 AI workers for your local business — website lead follow-up, review collection, missed-call recovery, outreach, and ad nurturing.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563eb'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='14' font-weight='bold' font-family='Inter'>LA</text></svg>">
+</head>
+<body>
+
+  <!-- Navigation (minimal) -->
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="/" class="nav__logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#2563eb"/>
+          <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="24" cy="20" r="3" fill="#22c55e"/>
+        </svg>
+        Lazy AI<span class="nav__logo-accent"> Agency</span>
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <section class="intake-hero">
+    <div class="container">
+      <h1>Start Your <span class="text-gradient">Free 30-Day Trial</span></h1>
+      <p>Tell us about your business and we'll activate your AI workers in 48 hours.</p>
+    </div>
+  </section>
+
+  <!-- Intake Form -->
+  <section class="intake-form">
+    <div class="container">
+      <form class="intake-form__card" id="intakeForm" novalidate>
+
+        <!-- Business Info -->
+        <div class="intake-form__group">
+          <label class="intake-form__label" for="businessName">Business Name *</label>
+          <input class="intake-form__input" type="text" id="businessName" name="businessName" placeholder="e.g. Lone Star Roofing" required autocomplete="organization">
+        </div>
+
+        <div class="intake-form__group">
+          <label class="intake-form__label" for="industry">Industry *</label>
+          <select class="intake-form__select" id="industry" name="industry" required>
+            <option value="">Select your industry...</option>
+            <option value="contractor">Contractor / Roofing / HVAC</option>
+            <option value="plumber">Plumber</option>
+            <option value="electrician">Electrician</option>
+            <option value="dentist">Dentist</option>
+            <option value="salon">Salon / Barber</option>
+            <option value="medspa">Med Spa / Wellness</option>
+            <option value="auto">Auto Shop / Mechanic</option>
+            <option value="realestate">Real Estate</option>
+            <option value="law">Law Firm</option>
+            <option value="gym">Gym / Fitness</option>
+            <option value="restaurant">Restaurant / Food Service</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="intake-form__group">
+          <label class="intake-form__label" for="email">Email Address *</label>
+          <input class="intake-form__input" type="email" id="email" name="email" placeholder="you@yourbusiness.com" required autocomplete="email">
+        </div>
+
+        <div class="intake-form__group">
+          <label class="intake-form__label" for="phone">Phone Number</label>
+          <input class="intake-form__input" type="tel" id="phone" name="phone" placeholder="(512) 555-1234" autocomplete="tel">
+        </div>
+
+        <!-- Current Situation -->
+        <div class="intake-form__group">
+          <label class="intake-form__label" for="website">Current Website</label>
+          <select class="intake-form__select" id="website" name="website">
+            <option value="none">No website yet</option>
+            <option value="outdated">I have one but it's outdated</option>
+            <option value="good">I have a good website</option>
+          </select>
+        </div>
+
+        <div class="intake-form__group">
+          <label class="intake-form__label" for="leads">How many leads do you get per month?</label>
+          <select class="intake-form__select" id="leads" name="leads">
+            <option value="0-10">0–10</option>
+            <option value="11-50">11–50</option>
+            <option value="51-100">51–100</option>
+            <option value="100+">100+</option>
+          </select>
+        </div>
+
+        <!-- Tier Selection -->
+        <div class="intake-form__group">
+          <label class="intake-form__label">Select Your Plan *</label>
+          <div class="intake-form__radio-group">
+
+            <label class="intake-form__radio selected">
+              <input type="radio" name="tier" value="starter" checked>
+              <div class="intake-form__radio-info">
+                <div class="intake-form__radio-name">Starter</div>
+                <div class="intake-form__radio-desc">Website + AI lead nurture &amp; review collection</div>
+              </div>
+              <div class="intake-form__radio-price">$97<span style="font-size:0.85rem;font-weight:500;color:var(--text-tertiary)">/mo</span></div>
+            </label>
+
+            <label class="intake-form__radio">
+              <input type="radio" name="tier" value="growth">
+              <div class="intake-form__radio-info">
+                <div class="intake-form__radio-name">Growth</div>
+                <div class="intake-form__radio-desc">Adds voice receptionist + outreach specialist</div>
+              </div>
+              <div class="intake-form__radio-price">$497<span style="font-size:0.85rem;font-weight:500;color:var(--text-tertiary)">/mo</span></div>
+            </label>
+
+            <label class="intake-form__radio">
+              <input type="radio" name="tier" value="enterprise">
+              <div class="intake-form__radio-info">
+                <div class="intake-form__radio-name">Enterprise</div>
+                <div class="intake-form__radio-desc">All 5 AI workers + full ad management</div>
+              </div>
+              <div class="intake-form__radio-price">$2,497<span style="font-size:0.85rem;font-weight:500;color:var(--text-tertiary)">/mo</span></div>
+            </label>
+
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="intake-form__submit">Start My Free Trial →</button>
+
+        <p class="intake-form__footer">
+          Free for 30 days. No credit card required. Cancel anytime.
+        </p>
+
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="nav__logo">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="#2563eb"/>
+              <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="24" cy="20" r="3" fill="#22c55e"/>
+            </svg>
+            Lazy AI<span class="nav__logo-accent"> Agency</span>
+          </a>
+          <p class="footer__tagline">A complete AI-powered department for local businesses.</p>
+        </div>
+        <div class="footer__links">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="/#ai-workers">AI Workers</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer__links">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="mailto:hello@lazyagency.ai">Contact</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer__links">
+          <h4>Get Started</h4>
+          <ul>
+            <li><a href="/intake.html">Free Trial</a></li>
+            <li><a href="/intake.html">Apply Now</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 Lazy AI Agency. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
