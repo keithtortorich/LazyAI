@@ -1,382 +1,596 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lazy AI Agency — Free 30-Day Website + AI Sales Team</title>
-    <meta name="description" content="Get a free website and a complete AI sales & marketing team for your fitness or beauty business. No credit card. 30 days." />
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root {
-            --primary: #7c3aed;
-            --primary-light: #a78bfa;
-            --primary-dark: #5b21b6;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --bg: #ffffff;
-            --gray-50: #f8fafc;
-            --gray-100: #f1f5f9;
-            --gray-200: #e2e8f0;
-            --radius: 12px;
-            --shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05);
-        }
-        html { scroll-behavior: smooth; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--text); line-height: 1.6; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-        /* Header */
-        header { padding: 20px 0; border-bottom: 1px solid var(--gray-200); }
-        header .container { display: flex; align-items: center; justify-content: space-between; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; }
-        .logo span { color: var(--text); }
-
-        .btn {
-            display: inline-block; background: var(--primary); color: #fff; padding: 14px 32px;
-            border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 1rem;
-            transition: background .2s; border: none; cursor: pointer;
-        }
-        .btn:hover { background: var(--primary-dark); }
-        .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
-        .btn-outline:hover { background: var(--primary); color: #fff; }
-        .btn-lg { padding: 16px 40px; font-size: 1.125rem; }
-
-        /* Hero */
-        .hero { padding: 80px 0 60px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); }
-        .hero .container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-        .hero h1 { font-size: 2.75rem; line-height: 1.15; margin-bottom: 16px; }
-        .hero h1 span { color: var(--primary); }
-        .hero p { font-size: 1.125rem; color: var(--text-light); margin-bottom: 32px; max-width: 480px; }
-        .hero .badge {
-            display: inline-block; background: #fff; border: 1px solid var(--gray-200);
-            padding: 6px 16px; border-radius: 50px; font-size: .875rem; font-weight: 600;
-            color: var(--primary); margin-bottom: 20px;
-        }
-        .hero-stats { display: flex; gap: 40px; margin-top: 40px; }
-        .hero-stats div { text-align: center; }
-        .hero-stats .num { font-size: 1.75rem; font-weight: 800; color: var(--primary); }
-        .hero-stats .label { font-size: .875rem; color: var(--text-light); }
-        .hero-image {
-            background: #fff; border-radius: var(--radius); padding: 40px;
-            box-shadow: var(--shadow-lg); border: 1px solid var(--gray-200);
-        }
-        .hero-image .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .hero-image .worker {
-            background: var(--gray-50); border-radius: 8px; padding: 16px;
-            text-align: center; border: 1px solid var(--gray-200);
-        }
-        .hero-image .worker .emoji { font-size: 1.75rem; margin-bottom: 4px; }
-        .hero-image .worker .name { font-size: .8rem; font-weight: 600; color: var(--text); }
-        .hero-image .worker .role { font-size: .7rem; color: var(--text-light); }
-
-        @media (max-width: 768px) {
-            .hero .container { grid-template-columns: 1fr; text-align: center; }
-            .hero p { max-width: 100%; }
-            .hero-stats { justify-content: center; }
-            .hero h1 { font-size: 2rem; }
-        }
-
-        /* Offer Banner */
-        .offer-banner {
-            background: var(--primary); color: #fff; text-align: center; padding: 24px;
-            font-size: 1.125rem; font-weight: 600;
-        }
-        .offer-banner span { background: rgba(255,255,255,.2); padding: 4px 12px; border-radius: 50px; margin: 0 8px; }
-
-        /* How It Works */
-        .how { padding: 80px 0; }
-        .how h2 { text-align: center; font-size: 2rem; margin-bottom: 16px; }
-        .how .subtitle { text-align: center; color: var(--text-light); margin-bottom: 48px; max-width: 600px; margin-left: auto; margin-right: auto; }
-        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-        .step { text-align: center; }
-        .step .num {
-            width: 48px; height: 48px; background: var(--gray-100); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 1.25rem; color: var(--primary); margin: 0 auto 16px;
-        }
-        .step h3 { font-size: 1.25rem; margin-bottom: 8px; }
-        .step p { color: var(--text-light); font-size: .95rem; }
-
-        /* Team */
-        .team { padding: 80px 0; background: var(--gray-50); }
-        .team h2 { text-align: center; font-size: 2rem; margin-bottom: 16px; }
-        .team .subtitle { text-align: center; color: var(--text-light); margin-bottom: 48px; }
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
-        .team-card {
-            background: #fff; border-radius: var(--radius); padding: 32px 24px;
-            text-align: center; border: 1px solid var(--gray-200);
-            transition: box-shadow .2s, transform .2s;
-        }
-        .team-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-        .team-card .emoji { font-size: 2.5rem; margin-bottom: 12px; }
-        .team-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
-        .team-card p { color: var(--text-light); font-size: .875rem; }
-
-        /* For Franchises */
-        .franchise { padding: 80px 0; }
-        .franchise h2 { text-align: center; font-size: 2rem; margin-bottom: 16px; }
-        .franchise .subtitle { text-align: center; color: var(--text-light); margin-bottom: 48px; max-width: 600px; margin-left: auto; margin-right: auto; }
-        .franchise-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
-        .franchise-card {
-            background: var(--gray-50); border-radius: var(--radius); padding: 32px 24px;
-            border: 1px solid var(--gray-200); text-align: center;
-        }
-        .franchise-card .icon { font-size: 2rem; margin-bottom: 12px; }
-        .franchise-card h3 { font-size: 1.15rem; margin-bottom: 8px; }
-        .franchise-card p { color: var(--text-light); font-size: .9rem; }
-
-        /* CTA */
-        .cta-section { padding: 80px 0; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center; }
-        .cta-section h2 { font-size: 2.25rem; margin-bottom: 16px; }
-        .cta-section p { color: var(--text-light); font-size: 1.125rem; margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
-
-        /* Form */
-        .form-section { padding: 80px 0; }
-        .form-section .container { max-width: 540px; }
-        .form-section h2 { text-align: center; font-size: 2rem; margin-bottom: 8px; }
-        .form-section .subtitle { text-align: center; color: var(--text-light); margin-bottom: 40px; }
-        .form { display: flex; flex-direction: column; gap: 16px; }
-        .form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .form input, .form select, .form textarea {
-            padding: 14px 16px; border: 1px solid var(--gray-200); border-radius: 8px;
-            font-size: 1rem; font-family: inherit; transition: border-color .2s;
-        }
-        .form input:focus, .form select:focus, .form textarea:focus { outline: none; border-color: var(--primary); }
-        .form textarea { min-height: 100px; resize: vertical; }
-        .form .btn { align-self: flex-start; }
-
-        /* Footer */
-        footer { padding: 40px 0; text-align: center; color: var(--text-light); border-top: 1px solid var(--gray-200); }
-
-        @media (max-width: 768px) {
-            .steps { grid-template-columns: 1fr; }
-            .form .row { grid-template-columns: 1fr; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lazy AI Agency — AI Workers for Local Businesses</title>
+  <meta name="description" content="Get a complete AI-powered department for your local business. 5 specialized AI workers handle outreach, reviews, missed calls, website leads, and ad nurturing.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563eb'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='14' font-weight='bold' font-family='Inter'>LA</text></svg>">
 </head>
 <body>
 
-<header>
-    <div class="container">
-        <div class="logo">Lazy<span> AI Agency</span></div>
-        <a href="#get-started" class="btn">Get Free Site</a>
+  <!-- ================================================================
+       Navigation
+       ================================================================ -->
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="#" class="nav__logo">
+        <svg class="nav__logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#2563eb"/>
+          <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="24" cy="20" r="3" fill="#22c55e"/>
+        </svg>
+        Lazy AI<span class="nav__logo-accent"> Agency</span>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#ai-workers">AI Workers</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="/intake.html" class="btn btn--sm btn--primary">Start Free Trial</a></li>
+      </ul>
     </div>
-</header>
+  </nav>
 
-<section class="hero">
-    <div class="container">
-        <div>
-            <div class="badge">🔥 Free 30-Day Trial · No Credit Card</div>
-            <h1>Your Own <span>AI Sales & Marketing Department</span> — Free for 30 Days</h1>
-            <p>Five AI workers that find leads, answer calls, book appointments, collect reviews, and run ads — plus a beautiful website. All included. Zero setup cost.</p>
-            <a href="#get-started" class="btn btn-lg">Get Your Free Website + AI Team →</a>
-            <div class="hero-stats">
-                <div><div class="num">5</div><div class="label">AI Workers</div></div>
-                <div><div class="num">&lt;5m</div><div class="label">Response Time</div></div>
-                <div><div class="num">30d</div><div class="label">Free Trial</div></div>
-            </div>
-        </div>
-        <div class="hero-image">
-            <div class="team-grid">
-                <div class="worker">
-                    <div class="emoji">🎯</div>
-                    <div class="name">Outreach</div>
-                    <div class="role">Reactivates old leads</div>
-                </div>
-                <div class="worker">
-                    <div class="emoji">⭐</div>
-                    <div class="name">Reviews</div>
-                    <div class="role">Gets Google reviews</div>
-                </div>
-                <div class="worker">
-                    <div class="emoji">💬</div>
-                    <div class="name">Website Lead</div>
-                    <div class="role">Responds in &lt;5 min</div>
-                </div>
-                <div class="worker">
-                    <div class="emoji">📞</div>
-                    <div class="name">Receptionist</div>
-                    <div class="role">Texts missed calls</div>
-                </div>
-                <div class="worker" style="grid-column: span 2;">
-                    <div class="emoji">📈</div>
-                    <div class="name">Marketing Director</div>
-                    <div class="role">Manages ads & ROAS</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="offer-banner">
-    🎁 <strong>Free 30-Day Website + AI Department</strong> for fitness & beauty businesses.
-    <span>No credit card</span> · <span>No commitment</span> · <span>We build it</span>
-</div>
-
-<section class="how" id="how">
-    <div class="container">
-        <h2>How It Works</h2>
-        <p class="subtitle">Three steps to having a complete AI-powered sales & marketing system for your business.</p>
-        <div class="steps">
-            <div class="step">
-                <div class="num">1</div>
-                <h3>We Build Your Site</h3>
-                <p>We spin up a modern, mobile-friendly website for your business. You don't lift a finger.</p>
-            </div>
-            <div class="step">
-                <div class="num">2</div>
-                <h3>AI Team Goes Live</h3>
-                <p>All 5 AI workers activate — they start reactivating leads, answering inquiries, collecting reviews, and managing your pipeline.</p>
-            </div>
-            <div class="step">
-                <div class="num">3</div>
-                <h3>You Keep the Results</h3>
-                <p>After 30 days, either subscribe to keep everything running, or walk away. No strings.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="team" id="team">
-    <div class="container">
-        <h2>Your 5 AI Workers</h2>
-        <p class="subtitle">A complete department that never sleeps, never slows down, and never drops a lead.</p>
-        <div class="team-grid">
-            <div class="team-card">
-                <div class="emoji">🎯</div>
-                <h3>Outreach Specialist</h3>
-                <p>Reaches out to your old leads with personalized messages. When they reply, books them instantly.</p>
-            </div>
-            <div class="team-card">
-                <div class="emoji">⭐</div>
-                <h3>Reviews & Referrals</h3>
-                <p>Asks happy customers for Google reviews. Handles negative feedback privately. Drives referrals.</p>
-            </div>
-            <div class="team-card">
-                <div class="emoji">💬</div>
-                <h3>Website Lead Nurturer</h3>
-                <p>Responds to every website form inquiry within 5 minutes — the window where most conversions happen.</p>
-            </div>
-            <div class="team-card">
-                <div class="emoji">📞</div>
-                <h3>AI Receptionist</h3>
-                <p>When you miss a call, it immediately texts the caller back to capture their interest and book them.</p>
-            </div>
-            <div class="team-card" style="grid-column: span 2; max-width: 400px; margin: 0 auto;">
-                <div class="emoji">📈</div>
-                <h3>Marketing Director</h3>
-                <p>Manages paid ad campaigns and ensures every dollar of ad spend converts into booked appointments, not wasted clicks.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="franchise" id="franchise">
-    <div class="container">
-        <h2>Built for Fitness & Beauty Businesses</h2>
-        <p class="subtitle">Whether you own one location or twenty, the system scales with you.</p>
-        <div class="franchise-grid">
-            <div class="franchise-card">
-                <div class="icon">🏋️</div>
-                <h3>Gyms & Fitness Studios</h3>
-                <p>Orangetheory, F45, Anytime Fitness, CrossFit, Pilates, yoga studios — we drive membership signups.</p>
-            </div>
-            <div class="franchise-card">
-                <div class="icon">💇</div>
-                <h3>Salons & Spas</h3>
-                <p>Beauty salons, barbershops, nail bars, med spas, waxing studios, lash bars — we fill appointment books.</p>
-            </div>
-            <div class="franchise-card">
-                <div class="icon">🏢</div>
-                <h3>Multi-Location Owners</h3>
-                <p>Own multiple franchise locations? One dashboard to manage leads across all your sites. Centralized.</p>
-            </div>
-            <div class="franchise-card">
-                <div class="icon">⚡</div>
-                <h3>Zero Work From You</h3>
-                <p>We set up the site, configure the AI workers, and start generating results. You just take the bookings.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="cta-section">
-    <div class="container">
-        <h2>Free for 30 Days. No Credit Card.</h2>
-        <p>Get a custom website + 5 AI workers running for your business. See the results before you pay a dime.</p>
-        <a href="#get-started" class="btn btn-lg">Claim Your Free 30 Days →</a>
-    </div>
-</section>
-
-<section class="form-section" id="get-started">
-    <div class="container">
-        <h2>Get Your Free Site + AI Team</h2>
-        <p class="subtitle">Fill this out and we'll build everything for you. Takes 2 minutes.</p>
-        <form class="form" id="signupForm">
-            <div class="row">
-                <input type="text" name="name" placeholder="Your Name" required />
-                <input type="tel" name="phone" placeholder="Phone Number" required />
-            </div>
-            <div class="row">
-                <input type="email" name="email" placeholder="Email" required />
-                <input type="text" name="business" placeholder="Business Name" required />
-            </div>
-            <div class="row">
-                <select name="vertical" required>
-                    <option value="">Select your type...</option>
-                    <option value="fitness">Fitness / Gym / Studio</option>
-                    <option value="beauty">Beauty Salon / Barber / Spa</option>
-                    <option value="both">Both Fitness & Beauty</option>
-                    <option value="other">Other Service Business</option>
-                </select>
-                <input type="text" name="city" placeholder="City" required />
-            </div>
-            <textarea name="message" placeholder="Tell us about your business (optional)"></textarea>
-            <button type="submit" class="btn btn-lg" style="align-self:stretch;text-align:center;">Start My Free 30 Days</button>
-        </form>
-        <p style="text-align:center;margin-top:16px;color:var(--text-light);font-size:.875rem;">
-            No credit card needed. Cancel anytime.
+  <!-- ================================================================
+       Hero
+       ================================================================ -->
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <div class="hero__badge">🤖 5 AI Workers &middot; No contracts &middot; Cancel anytime</div>
+        <h1 class="hero__title">
+          An <span class="text-gradient">AI-powered department</span> for your business.<br>
+          <span class="text-accent">Free for 30 days.</span>
+        </h1>
+        <p class="hero__subtitle">
+          Five specialized AI workers that handle outreach, reviews, missed calls, website follow-ups, and ad nurturing — so you never lose another lead.
         </p>
-    </div>
-</section>
-
-<footer>
-    <div class="container">
-        <p>© <span id="year"></span> Lazy AI Agency. All rights reserved.</p>
-    </div>
-</footer>
-
-<script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    document.getElementById('signupForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const form = e.target;
-        const btn = form.querySelector('button');
-        const data = Object.fromEntries(new FormData(form));
-
-        btn.textContent = 'Submitting...';
-        btn.disabled = true;
-
-        try {
-            // For now, log and show success
-            console.log('Lead:', data);
-            form.innerHTML = `
-                <div style="text-align:center;padding:60px 0;">
-                    <div style="font-size:3rem;margin-bottom:16px;">🎉</div>
-                    <h3>You're In!</h3>
-                    <p style="color:var(--text-light);margin-top:8px;">
-                        We'll reach out within 24 hours to get your free site + AI team set up.
-                    </p>
+        <div class="hero__actions">
+          <a href="/intake.html" class="btn btn--primary btn--xl">Start Your Free Trial →</a>
+          <a href="#how-it-works" class="btn btn--outline btn--xl">See How It Works</a>
+        </div>
+        <div class="hero__trust">
+          <div class="hero__trust-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Response in &lt;5 minutes
+          </div>
+          <div class="hero__trust-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            No credit card required
+          </div>
+          <div class="hero__trust-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Cancel anytime
+          </div>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="mockup-browser">
+          <div class="mockup-browser__bar">
+            <div class="mockup-browser__dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="mockup-browser__url">mybusiness.lazyagency.ai</div>
+          </div>
+          <div class="mockup-browser__content">
+            <div class="mockup-site">
+              <div class="mockup-site__header">
+                <div class="mockup-site__logo"></div>
+                <div class="mockup-site__nav">
+                  <span></span><span></span><span></span><span></span>
                 </div>
-            `;
-        } catch (err) {
-            btn.textContent = 'Start My Free 30 Days';
-            btn.disabled = false;
-            alert('Something went wrong. Try again or email us directly.');
-        }
-    });
-</script>
+              </div>
+              <div class="mockup-site__hero">
+                <div class="mockup-site__hero-text">
+                  <div class="mockup-site__line mockup-site__line--lg"></div>
+                  <div class="mockup-site__line mockup-site__line--md"></div>
+                  <div class="mockup-site__line mockup-site__line--sm"></div>
+                  <div class="mockup-site__btn"></div>
+                </div>
+                <div class="mockup-site__hero-img"></div>
+              </div>
+              <div class="mockup-site__grid">
+                <div class="mockup-site__grid-item"></div>
+                <div class="mockup-site__grid-item"></div>
+                <div class="mockup-site__grid-item"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <span class="hero__stat-number">5</span>
+            <span class="hero__stat-label">AI Workers</span>
+          </div>
+          <div class="hero__stat-divider"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-number">&lt;5m</span>
+            <span class="hero__stat-label">Response Time</span>
+          </div>
+          <div class="hero__stat-divider"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-number">40%+</span>
+            <span class="hero__stat-label">Avg Conv. Rate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- ================================================================
+       Trust Bar
+       ================================================================ -->
+  <section class="trust-bar">
+    <div class="container">
+      <p class="trust-bar__label">Trusted by local businesses across the US</p>
+      <div class="trust-bar__logos">
+        <span class="trust-bar__logo">Luna Salon</span>
+        <span class="trust-bar__logo">Rivera Plumbing</span>
+        <span class="trust-bar__logo">Park Realty</span>
+        <span class="trust-bar__logo">Green Med Spa</span>
+        <span class="trust-bar__logo">Kim Electric</span>
+        <span class="trust-bar__logo">Mendez Construction</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       How It Works
+       ================================================================ -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__tag">How It Works</p>
+        <h2 class="section__title">Your AI team is <span class="text-gradient">48 hours away</span></h2>
+        <p class="section__subtitle">No meetings. No technical skills needed. No commitment.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step__icon">📋</div>
+          <div class="step__number">01</div>
+          <h3 class="step__title">Apply</h3>
+          <p class="step__desc">Answer a few quick questions about your business. What you do, your current lead follow-up process, and your goals. Takes 2 minutes.</p>
+        </div>
+        <div class="step__arrow">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div class="step">
+          <div class="step__icon">🤖</div>
+          <div class="step__number">02</div>
+          <h3 class="step__title">We Activate</h3>
+          <p class="step__desc">We connect your website, phone line, and CRM to your 5 AI workers. Each worker is trained on your business and ready to go in 48 hours.</p>
+          <div class="step__tag">Activated in 48h ⚡</div>
+        </div>
+        <div class="step__arrow step__arrow--mobile">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div class="step">
+          <div class="step__icon">📈</div>
+          <div class="step__number">03</div>
+          <h3 class="step__title">You Decide</h3>
+          <p class="step__desc">Watch your leads get faster responses, more reviews roll in, and missed calls turn into bookings. Love it? Keep it. Not thrilled? Cancel — no charge.</p>
+          <div class="step__tag">$97/mo to keep it</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       AI Workers Section
+       ================================================================ -->
+  <section class="section section--alt" id="ai-workers">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__tag">Your AI Team</p>
+        <h2 class="section__title">5 specialized <span class="text-gradient">AI workers</span></h2>
+        <p class="section__subtitle">Each worker handles a specific job — just like a real department, but faster and always on.</p>
+      </div>
+      <div class="workers">
+        <!-- Worker 1 -->
+        <div class="worker">
+          <div class="worker__icon worker__icon--nurturer">🌐</div>
+          <h3 class="worker__name">Website Lead Nurturer</h3>
+          <span class="worker__role">Instant Response</span>
+          <p class="worker__desc">Monitors website form submissions and responds within 5 minutes with personalized messages — converting visitors into booked appointments.</p>
+        </div>
+
+        <!-- Worker 2 -->
+        <div class="worker">
+          <div class="worker__icon worker__icon--outreach">📢</div>
+          <h3 class="worker__name">Outreach Specialist</h3>
+          <span class="worker__role">Database Reactivation</span>
+          <p class="worker__desc">Reaches out to your existing lead and customer database with conversational messages. Follows up instantly when a lead shows interest.</p>
+        </div>
+
+        <!-- Worker 3 -->
+        <div class="worker">
+          <div class="worker__icon worker__icon--receptionist">📞</div>
+          <h3 class="worker__name">AI Receptionist</h3>
+          <span class="worker__role">Missed Call Recovery</span>
+          <p class="worker__desc">Monitors inbound calls. If a call is missed, automatically sends a text to capture the caller's interest and books an appointment.</p>
+        </div>
+
+        <!-- Worker 4 -->
+        <div class="worker">
+          <div class="worker__icon worker__icon--reviews">⭐</div>
+          <h3 class="worker__name">Reviews &amp; Referrals Manager</h3>
+          <span class="worker__role">Reputation Management</span>
+          <p class="worker__desc">Contacts customers for feedback, directs happy customers to leave Google reviews, handles negative feedback privately, and asks for referrals.</p>
+        </div>
+
+        <!-- Worker 5 -->
+        <div class="worker">
+          <div class="worker__icon worker__icon--marketing">🎯</div>
+          <h3 class="worker__name">Marketing Director</h3>
+          <span class="worker__role">Ad Lead Nurturing</span>
+          <p class="worker__desc">Manages paid advertising leads. Ensures no ad spend is wasted by slow human follow-up. Maximizes ROAS across Google and social channels.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       Pricing
+       ================================================================ -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__tag">Pricing</p>
+        <h2 class="section__title">Simple, transparent <span class="text-gradient">pricing</span></h2>
+        <p class="section__subtitle">All plans include a custom website + AI workers. No hidden fees. Cancel anytime.</p>
+      </div>
+      <div class="pricing">
+
+        <!-- Tier 1: Starter -->
+        <div class="plan plan--basic">
+          <h3 class="plan__name">Starter</h3>
+          <div class="plan__price"><span class="plan__currency">$</span>97<span class="plan__period">/month</span></div>
+          <p class="plan__desc">Custom website + essential AI follow-up. Perfect for getting started.</p>
+          <ul class="plan__features">
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Custom website built in 48h
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Website Lead Nurturer (instant follow-up)
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Reviews &amp; Referrals Manager (reputation)
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Free hosting &amp; domain
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Email support
+            </li>
+          </ul>
+          <a href="/intake.html" class="btn btn--outline btn--block">Start Free Trial</a>
+          <p class="plan__trial">Free 30-day trial</p>
+        </div>
+
+        <!-- Tier 2: Growth (Featured) -->
+        <div class="plan plan--pro plan--featured">
+          <div class="plan__badge">Most Popular</div>
+          <h3 class="plan__name">Growth</h3>
+          <div class="plan__price"><span class="plan__currency">$</span>497<span class="plan__period">/month</span></div>
+          <p class="plan__desc">Everything in Starter + voice receptionist that answers missed calls.</p>
+          <ul class="plan__features">
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Everything in Starter
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              AI Receptionist (missed-call text-back)
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Outreach Specialist (DB reactivation)
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Priority support
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Analytics dashboard
+            </li>
+          </ul>
+          <a href="/intake.html" class="btn btn--primary btn--block">Start Free Trial</a>
+          <p class="plan__trial">Free 30-day trial</p>
+        </div>
+
+        <!-- Tier 3: Enterprise -->
+        <div class="plan plan--enterprise">
+          <h3 class="plan__name">Enterprise</h3>
+          <div class="plan__price"><span class="plan__currency">$</span>2,497<span class="plan__period">/month</span></div>
+          <p class="plan__desc">The complete package — all 5 AI workers working as your coordinated team.</p>
+          <ul class="plan__features">
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Everything in Growth
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Marketing Director (ad lead nurturing)
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Full paid ad management
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Unlimited contacts &amp; messages
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Dedicated account manager
+            </li>
+          </ul>
+          <a href="/intake.html" class="btn btn--outline btn--block">Start Free Trial</a>
+          <p class="plan__trial">Free 30-day trial</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       Industries
+       ================================================================ -->
+  <section class="section section--alt" id="industries">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__tag">Who We Serve</p>
+        <h2 class="section__title">Built for <span class="text-gradient">local service</span> businesses</h2>
+        <p class="section__subtitle">If you serve your local community, our AI workers can handle your lead follow-up and customer engagement.</p>
+      </div>
+      <div class="industries">
+        <div class="industry">
+          <span class="industry__emoji">🔧</span>
+          <h3 class="industry__name">Contractors</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">🦷</span>
+          <h3 class="industry__name">Dentists</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">💇</span>
+          <h3 class="industry__name">Salons</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">🔩</span>
+          <h3 class="industry__name">Plumbers</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">⚡</span>
+          <h3 class="industry__name">Electricians</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">🏠</span>
+          <h3 class="industry__name">Real Estate</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">🚗</span>
+          <h3 class="industry__name">Auto Shops</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">🏥</span>
+          <h3 class="industry__name">Med Spas</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">⚖️</span>
+          <h3 class="industry__name">Law Firms</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">💪</span>
+          <h3 class="industry__name">Gyms</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">🍽️</span>
+          <h3 class="industry__name">Restaurants</h3>
+        </div>
+        <div class="industry">
+          <span class="industry__emoji">🚀</span>
+          <h3 class="industry__name">Other Business</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       FAQ
+       ================================================================ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__tag">FAQ</p>
+        <h2 class="section__title">Common <span class="text-gradient">questions</span></h2>
+      </div>
+      <div class="faq">
+        <div class="faq__item">
+          <button class="faq__question">
+            <span>How is this different from a regular website builder?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__answer">
+            <p>Regular website builders give you a static site. We give you a website plus an AI team that actively follows up with every lead — responding to form submissions in under 5 minutes, collecting reviews, recovering missed calls, and nurturing your ad leads.</p>
+          </div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__question">
+            <span>What do I need to provide to get started?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__answer">
+            <p>Your business info, a phone number, and access to your website form or CRM. If you don't have a website, we build you one. If you have a lead database, we import it. We handle the rest.</p>
+          </div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__question">
+            <span>What happens after the 30-day free trial?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__answer">
+            <p>If you want to keep your AI workers active, choose a plan starting at $97/month. If not, everything pauses with no charge. Your website and data are yours to keep.</p>
+          </div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__question">
+            <span>Can I cancel anytime?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__answer">
+            <p>Yes. No contracts, no cancellation fees. Cancel with one click and your AI workers stay active until the end of your billing period.</p>
+          </div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__question">
+            <span>Do I need any technical skills to use the AI workers?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__answer">
+            <p>None. We set everything up for you. Your AI workers are pre-trained on your business and start working immediately. You just run your business.</p>
+          </div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__question">
+            <span>Which industries do you work with?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__answer">
+            <p>Any local service business — contractors, dentists, salons, auto shops, real estate agents, med spas, plumbers, electricians, gyms, law firms, restaurants, and more. If you have customers, our AI workers can help.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       CTA
+       ================================================================ -->
+  <section class="section cta-section" id="cta">
+    <div class="container">
+      <div class="cta-section__inner">
+        <div class="cta-section__content">
+          <p class="cta-section__tag">Get started today</p>
+          <h2 class="cta-section__title">Your AI team is <span class="text-gradient">48 hours away</span></h2>
+          <p class="cta-section__subtitle">Answer a few quick questions and we'll activate your AI workers. No risk. No commitment.</p>
+          <div class="cta-section__steps">
+            <div class="cta-section__step">
+              <div class="cta-section__step-num">1</div>
+              <div>
+                <strong>What's your business?</strong>
+                <span>Tell us your type and goals</span>
+              </div>
+            </div>
+            <div class="cta-section__step">
+              <div class="cta-section__step-num">2</div>
+              <div>
+                <strong>Current lead process?</strong>
+                <span>How do you handle inquiries now?</span>
+              </div>
+            </div>
+            <div class="cta-section__step">
+              <div class="cta-section__step-num">3</div>
+              <div>
+                <strong>Which AI tier fits?</strong>
+                <span>$97/mo to start, upgrade anytime</span>
+              </div>
+            </div>
+          </div>
+          <a href="/intake.html" class="btn btn--primary btn--xl">Start Your Free Trial →</a>
+          <p class="cta-section__fine">Free for 30 days. No credit card. Cancel anytime.</p>
+        </div>
+        <div class="cta-section__visual">
+          <div class="cta-section__card">
+            <div class="cta-section__card-header">
+              <span>Apply in 2 minutes</span>
+              <span class="cta-section__card-pulse"></span>
+            </div>
+            <div class="cta-section__card-body">
+              <div class="cta-section__card-field">
+                <span>Business type</span>
+                <div class="cta-section__card-input">e.g. Salon, Plumber, Dentist...</div>
+              </div>
+              <div class="cta-section__card-field">
+                <span>AI workers needed</span>
+                <div class="cta-section__card-input">All 5 to start</div>
+              </div>
+              <div class="cta-section__card-field">
+                <span>After the trial</span>
+                <div class="cta-section__card-input">$97/month sounds great</div>
+              </div>
+              <div class="cta-section__card-btn">Apply Now →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       Footer
+       ================================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="#" class="nav__logo">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="#2563eb"/>
+              <path d="M8 12h16M8 16h12M8 20h14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="24" cy="20" r="3" fill="#22c55e"/>
+            </svg>
+            Lazy AI<span class="nav__logo-accent"> Agency</span>
+          </a>
+          <p class="footer__tagline">A complete AI-powered department for local businesses. Never lose another lead.</p>
+        </div>
+        <div class="footer__links">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#ai-workers">AI Workers</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#industries">Industries</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer__links">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="mailto:hello@lazyagency.ai">Contact</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer__links">
+          <h4>Get Started</h4>
+          <ul>
+            <li><a href="/intake.html">Free Trial</a></li>
+            <li><a href="/intake.html">Apply Now</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 Lazy AI Agency. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
