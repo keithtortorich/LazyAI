@@ -1303,3 +1303,48 @@ img { max-width: 100%; display: block; }
     to { opacity: 1; transform: translateY(0); }
   }
 }
+
+/* ============================
+   3D Interactive Elements
+   ============================ */
+
+.hero__3d-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.hero__visual {
+  position: relative;
+  z-index: 1;
+}
+
+/* 3D Tilt Cards */
+.tilt-card {
+  perspective: 800px;
+  transform-style: preserve-3d;
+}
+
+.tilt-card__inner {
+  transition: transform 0.2s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.tilt-card__face {
+  backface-visibility: hidden;
+}
+
+/* Pricing 3D hover */
+.plan {
+  perspective: 600px;
+}
+
+.plan:hover {
+  transform: perspective(600px) rotateX(2deg) translateY(-4px);
+}
