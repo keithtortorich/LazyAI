@@ -10,26 +10,26 @@
 }
 
 :root {
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --primary-light: #dbeafe;
-  --primary-50: #eff6ff;
-  --accent: #059669;
-  --accent-light: #d1fae5;
-  --purple: #7c3aed;
-  --bg: #ffffff;
-  --bg-alt: #f8fafc;
-  --text: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #94a3b8;
-  --border: #e2e8f0;
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-light: #1e3a5f;
+  --primary-50: #0f1e3a;
+  --accent: #10b981;
+  --accent-light: #064e3b;
+  --purple: #8b5cf6;
+  --bg: #0b1121;
+  --bg-alt: #111827;
+  --text: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --border: #1e293b;
   --radius: 12px;
   --radius-lg: 20px;
   --radius-xl: 24px;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -4px rgba(0,0,0,0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.5), 0 8px 10px -6px rgba(0,0,0,0.4);
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --font: 'Inter', -apple-system, sans-serif;
   --max-w: 1200px;
@@ -87,7 +87,7 @@ img { max-width: 100%; display: block; }
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(255,255,255,0.85);
+  background: rgba(11,17,33,0.95);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border-bottom: 1px solid var(--border);
@@ -238,7 +238,7 @@ img { max-width: 100%; display: block; }
 
 .hero {
   padding: 160px 0 80px;
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 40%, #f0fdf4 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #111827 40%, #0f172a 100%);
   overflow: hidden;
 }
 
@@ -254,7 +254,7 @@ img { max-width: 100%; display: block; }
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background: rgba(255,255,255,0.8);
+  background: rgba(11,17,33,0.9);
   border: 1px solid var(--border);
   border-radius: 100px;
   font-size: 0.875rem;
@@ -1347,4 +1347,85 @@ img { max-width: 100%; display: block; }
 
 .plan:hover {
   transform: perspective(600px) rotateX(2deg) translateY(-4px);
+}
+/* Dark mode form inputs */
+input[type="text"], input[type="tel"], input[type="email"],
+select, textarea {
+  background: #1e293b !important;
+  color: var(--text) !important;
+  border-color: #334155 !important;
+}
+input[type="text"]:focus, input[type="tel"]:focus, input[type="email"]:focus,
+select:focus, textarea:focus {
+  border-color: var(--primary) !important;
+  outline: none;
+}
+.lead-capture__input {
+  background: #1e293b !important;
+  color: var(--text) !important;
+  border-color: #334155 !important;
+}
+.lead-capture__input:focus {
+  border-color: var(--primary) !important;
+}
+
+/* Worker cards dark */
+.worker {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+.worker:hover {
+  border-color: var(--primary) !important;
+}
+
+/* Pricing cards dark */
+.plan {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+.plan--featured {
+  border-color: var(--primary) !important;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+}
+.plan:hover {
+  border-color: var(--primary) !important;
+}
+
+/* Industry cards */
+.industry-card {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* FAQ */
+.faq__item {
+  border-color: #334155 !important;
+}
+
+/* Sticky bar */
+.sticky-bar {
+  background: rgba(11,17,33,0.95) !important;
+  border-color: #1e293b !important;
+}
+
+/* Mockup browser */
+.mockup-browser {
+  background: #1e293b !important;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5) !important;
+}
+.mockup-browser__bar {
+  background: #0f172a !important;
+}
+.mockup-browser__url {
+  background: #334155 !important;
+  color: #94a3b8 !important;
+}
+.mockup-site__line {
+  background: #334155 !important;
+}
+.mockup-site__hero-img {
+  background: #334155 !important;
+}
+.mockup-site__grid-item {
+  background: #334155 !important;
 }

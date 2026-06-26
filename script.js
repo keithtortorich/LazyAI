@@ -108,13 +108,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Load Three.js from CDN then init
-  if (document.getElementById('hero3d')) {
-    var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-    script.onload = init3DScene;
-    document.head.appendChild(script);
-  }
+  // Init 3D scene (Three.js loaded via CDN in HTML head)
+    setTimeout(function() {
+      init3DScene();
+    }, 500); // Small delay to ensure DOM + Three.js are ready
 
   // ====================================================================
   // 2. 3D Tilt Cards (AI Workers + Pricing)
